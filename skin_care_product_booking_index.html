@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlowCare - Skin Care Product Booking</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#fff7f9;color:#333}
+header{background:linear-gradient(135deg,#e88aa8,#c95c83);color:white;padding:22px 7%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:5}
+.logo{font-size:28px;font-weight:bold}.cart{font-size:18px;background:#fff;color:#c34d78;padding:10px 16px;border-radius:25px}
+.hero{text-align:center;padding:55px 20px;background:#ffe4ed}
+.hero h1{font-size:42px;color:#9d315c;margin-bottom:12px}.hero p{font-size:18px}
+.products{padding:40px 7%}.products h2{text-align:center;color:#9d315c;margin-bottom:28px;font-size:30px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px}
+.card{background:white;border-radius:18px;padding:22px;text-align:center;box-shadow:0 5px 18px #0001;transition:.2s}
+.card:hover{transform:translateY(-5px)}
+.product-img{height:130px;border-radius:15px;background:linear-gradient(135deg,#ffe1ea,#f5b8cb);display:flex;align-items:center;justify-content:center;font-size:65px;margin-bottom:16px}
+.card h3{color:#8e3155;margin-bottom:8px}.price{font-size:20px;font-weight:bold;margin:10px}
+button{border:0;background:#c95c83;color:white;padding:11px 18px;border-radius:22px;cursor:pointer;font-weight:bold}
+button:hover{background:#a94368}
+.booking{max-width:650px;margin:20px auto 50px;background:white;padding:30px;border-radius:20px;box-shadow:0 5px 18px #0001}
+.booking h2{text-align:center;color:#9d315c;margin-bottom:22px}
+label{display:block;margin:12px 0 6px;font-weight:bold}
+input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-size:15px}
+textarea{resize:vertical}.submit{width:100%;margin-top:20px;font-size:16px}
+#message{display:none;margin-top:18px;padding:14px;border-radius:10px;background:#e7f8ed;color:#267342;text-align:center;font-weight:bold}
+footer{text-align:center;background:#9d315c;color:white;padding:18px}
+@media(max-width:600px){.hero h1{font-size:32px}header{padding:18px 4%}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🌸 GlowCare</div>
+  <div class="cart">🛍️ Bookings: <span id="count">0</span></div>
+</header>
+
+<section class="hero">
+  <h1>Skin Care Products</h1>
+  <p>Choose your favourite skin care product and book it easily.</p>
+</section>
+
+<section class="products">
+<h2>Our Products</h2>
+<div class="grid">
+  <div class="card">
+    <div class="product-img">🧴</div>
+    <h3>Hydrating Face Wash</h3><p>Gentle daily cleanser</p><div class="price">₹299</div>
+    <button onclick="selectProduct('Hydrating Face Wash',299)">Book Now</button>
+  </div>
+  <div class="card">
+    <div class="product-img">✨</div>
+    <h3>Vitamin C Serum</h3><p>For bright & glowing skin</p><div class="price">₹499</div>
+    <button onclick="selectProduct('Vitamin C Serum',499)">Book Now</button>
+  </div>
+  <div class="card">
+    <div class="product-img">🌿</div>
+    <h3>Aloe Vera Gel</h3><p>Soothing skin moisturizer</p><div class="price">₹249</div>
+    <button onclick="selectProduct('Aloe Vera Gel',249)">Book Now</button>
+  </div>
+  <div class="card">
+    <div class="product-img">🌞</div>
+    <h3>SPF 50 Sunscreen</h3><p>Daily sun protection</p><div class="price">₹399</div>
+    <button onclick="selectProduct('SPF 50 Sunscreen',399)">Book Now</button>
+  </div>
+</div>
+</section>
+
+<section class="booking" id="booking">
+<h2>📝 Product Booking Form</h2>
+<form onsubmit="bookProduct(event)">
+  <label>Full Name</label>
+  <input type="text" id="name" placeholder="Enter your name" required>
+
+  <label>Mobile Number</label>
+  <input type="tel" id="mobile" placeholder="Enter mobile number" pattern="[0-9]{10}" required>
+
+  <label>Select Product</label>
+  <select id="product" required>
+    <option value="">-- Select Product --</option>
+    <option>Hydrating Face Wash - ₹299</option>
+    <option>Vitamin C Serum - ₹499</option>
+    <option>Aloe Vera Gel - ₹249</option>
+    <option>SPF 50 Sunscreen - ₹399</option>
+  </select>
+
+  <label>Quantity</label>
+  <input type="number" id="quantity" min="1" value="1" required>
+
+  <label>Delivery Address</label>
+  <textarea id="address" rows="3" placeholder="Enter delivery address" required></textarea>
+
+  <button class="submit" type="submit">Confirm Booking</button>
+</form>
+<div id="message"></div>
+</section>
+
+<footer>© 2026 GlowCare | Skin Care Product Booking</footer>
+
+<script>
+let bookingCount = 0;
+
+function selectProduct(name, price){
+  const select = document.getElementById("product");
+  [...select.options].forEach(option => {
+    if(option.textContent.startsWith(name)) select.value = option.value;
+  });
+  document.getElementById("booking").scrollIntoView({behavior:"smooth"});
+}
+
+function bookProduct(event){
+  event.preventDefault();
+  const name = document.getElementById("name").value;
+  const product = document.getElementById("product").value;
+  const quantity = document.getElementById("quantity").value;
+
+  bookingCount++;
+  document.getElementById("count").textContent = bookingCount;
+
+  const msg = document.getElementById("message");
+  msg.style.display = "block";
+  msg.innerHTML = "✅ Booking confirmed!<br>Thank you, " + name +
+                  ". Your order for " + quantity + " × " + product +
+                  " has been placed successfully.";
+
+  event.target.reset();
+  window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+}
+</script>
+
+</body>
+</html>
